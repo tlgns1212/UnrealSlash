@@ -72,7 +72,7 @@ void ASlashCharacter::Look(const FInputActionValue& Value)
 
 void ASlashCharacter::Jump()
 {
-	// 점프 액션
+	ACharacter::Jump();
 }
 
 void ASlashCharacter::EKeyPressed()
