@@ -50,7 +50,7 @@ void ASlashCharacter::BeginPlay()
 void ASlashCharacter::Move(const FInputActionValue& Value)
 {
 
-	// »óÇÏÁÂ¿ì ¿òÁ÷ÀÓ
+	// ìƒí•˜ì¢Œìš° ì›€ì§ì„
 	const FVector2D MovementVector = Value.Get<FVector2D>();
 
 	const FRotator Rotation = Controller->GetControlRotation();
@@ -72,22 +72,22 @@ void ASlashCharacter::Look(const FInputActionValue& Value)
 
 void ASlashCharacter::Jump()
 {
-	// Á¡ÇÁ ¾×¼Ç
+	// ì í”„ ì•¡ì…˜
 }
 
 void ASlashCharacter::EKeyPressed()
 {
-	// EKey ´­¸²
+	// EKey ëˆŒë¦¼
 }
 
 void ASlashCharacter::Attack()
 {
-	// °ø°İ
+	// ê³µê²©
 }
 
 void ASlashCharacter::Dodge()
 {
-	// È¸ÇÇ
+	// íšŒí”¼
 }
 
 void ASlashCharacter::Tick(float DeltaTime)
