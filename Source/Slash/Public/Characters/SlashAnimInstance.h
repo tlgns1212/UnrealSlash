@@ -6,6 +6,7 @@
 #include "Animation/AnimInstance.h"
 #include "SlashAnimInstance.generated.h"
 
+enum class ECharacterState : uint8;
 /**
  * 
  */
@@ -28,4 +29,7 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category = Movement)
 	bool bIsFalling;
+
+	UPROPERTY(BlueprintReadOnly, Category = State)
+	ECharacterState CharacterState;
 };

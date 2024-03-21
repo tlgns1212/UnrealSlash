@@ -14,9 +14,12 @@ class USpringArmComponent;
 class UCameraComponent;
 class UGroomComponent;
 
-enum class ECharacterState 
+UENUM(BlueprintType)
+enum class ECharacterState : uint8
 {
-	
+	ECS_Unequipped UMETA(DisplayName = "Unequipped"),
+	ECS_EquippedOneHandedWeapon UMETA(DisplayName = "EquippedOneHandedWeapon"),
+	ECS_EquippedTwoHandedWeapon UMETA(DisplayName = "EquippedTwoHandedWeapon")
 };
 
 UCLASS()
@@ -30,7 +33,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	FORCEINLINE void SetOverlappingItem(AItem* ItemIn){OverlappingItem = ItemIn; }
-
+	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
+	
 protected:
 	virtual void BeginPlay() override;
 
@@ -57,6 +61,9 @@ protected:
 	void Dodge();
 
 private:
+
+	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
+	
 	UPROPERTY(VisibleAnywhere)
 		USpringArmComponent* SpringArm;
 	UPROPERTY(VisibleAnywhere)
