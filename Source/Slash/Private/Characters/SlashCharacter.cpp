@@ -7,6 +7,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GroomComponent.h"
+#include "Items/Weapons/Weapon.h"
 
 ASlashCharacter::ASlashCharacter()
 {
@@ -77,7 +78,11 @@ void ASlashCharacter::Jump()
 
 void ASlashCharacter::EKeyPressed()
 {
-	// EKey 눌림
+	AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlappingItem);
+	if(OverlappingWeapon)
+	{
+		OverlappingWeapon->Equip(GetMesh(),FName{"RightHandSocket"});
+	}
 }
 
 void ASlashCharacter::Attack()

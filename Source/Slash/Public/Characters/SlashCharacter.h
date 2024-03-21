@@ -7,12 +7,17 @@
 #include "InputActionValue.h"
 #include "SlashCharacter.generated.h"
 
-
+class AItem;
 class UInputMappingContext;
 class UInputAction;
 class USpringArmComponent;
 class UCameraComponent;
 class UGroomComponent;
+
+enum class ECharacterState 
+{
+	
+};
 
 UCLASS()
 class SLASH_API ASlashCharacter : public ACharacter
@@ -23,6 +28,8 @@ public:
 	ASlashCharacter();
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	FORCEINLINE void SetOverlappingItem(AItem* ItemIn){OverlappingItem = ItemIn; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -54,8 +61,11 @@ private:
 		USpringArmComponent* SpringArm;
 	UPROPERTY(VisibleAnywhere)
 		UCameraComponent* ViewCamera;
-	UPROPERTY(VisibleAnywhere, Category = Hair)
+	UPROPERTY(VisibleAnywhere, Category = "Hair")
 		UGroomComponent* Hair;
 	UPROPERTY(VisibleAnywhere, Category = "Hair")
 		UGroomComponent* Eyebrows;
+
+	UPROPERTY(VisibleInstanceOnly, Category="Item")
+	AItem* OverlappingItem;
 };
