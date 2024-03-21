@@ -32,26 +32,26 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	FORCEINLINE void SetOverlappingItem(AItem* ItemIn){OverlappingItem = ItemIn; }
+	FORCEINLINE void SetOverlappingItem(AItem* ItemIn) { OverlappingItem = ItemIn; }
 	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
-	
+
 protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, Category = Input)
-		UInputMappingContext* SlashContext;
+	UInputMappingContext* SlashContext;
 	UPROPERTY(EditAnywhere, Category = Input)
-		UInputAction* MovementAction;
+	UInputAction* MovementAction;
 	UPROPERTY(EditAnywhere, Category = Input)
-		UInputAction* LookAction;
+	UInputAction* LookAction;
 	UPROPERTY(EditAnywhere, Category = Input)
-		UInputAction* JumpAction;
+	UInputAction* JumpAction;
 	UPROPERTY(EditAnywhere, Category = Input)
-		UInputAction* EKeyPressedAction;
+	UInputAction* EKeyPressedAction;
 	UPROPERTY(EditAnywhere, Category = Input)
-		UInputAction* AttackAction;
+	UInputAction* AttackAction;
 	UPROPERTY(EditAnywhere, Category = Input)
-		UInputAction* DodgeAction;
+	UInputAction* DodgeAction;
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
@@ -61,17 +61,16 @@ protected:
 	void Dodge();
 
 private:
-
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
-	
+
 	UPROPERTY(VisibleAnywhere)
-		USpringArmComponent* SpringArm;
+	USpringArmComponent* SpringArm;
 	UPROPERTY(VisibleAnywhere)
-		UCameraComponent* ViewCamera;
+	UCameraComponent* ViewCamera;
 	UPROPERTY(VisibleAnywhere, Category = "Hair")
-		UGroomComponent* Hair;
+	UGroomComponent* Hair;
 	UPROPERTY(VisibleAnywhere, Category = "Hair")
-		UGroomComponent* Eyebrows;
+	UGroomComponent* Eyebrows;
 
 	UPROPERTY(VisibleInstanceOnly, Category="Item")
 	AItem* OverlappingItem;
