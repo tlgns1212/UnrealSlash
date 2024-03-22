@@ -7,6 +7,7 @@
 #include "InputActionValue.h"
 #include "SlashCharacter.generated.h"
 
+class AWeapon;
 class AItem;
 class UInputMappingContext;
 class UInputAction;
@@ -22,12 +23,27 @@ enum class ECharacterState : uint8
 	ECS_EquippedTwoHandedWeapon UMETA(DisplayName = "EquippedTwoHandedWeapon")
 };
 
+UENUM(BlueprintType)
+enum class EActionState : uint8
+{
+	EAS_Unoccupied UMETA(DisplayName="Unoccupied"),
+	EAS_Attacking UMETA(DisplayName="Attacking"),
+	EAS_EquippingWeapon UMETA(DisplayName="EquippingWeapon")
+};
+
 UCLASS()
 class SLASH_API ASlashCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
+	//===============================================================================
+	// PROPERTIES & VARIABLES
+	//===============================================================================
+
+	//===============================================================================
+	// FUNCTIONS
+	//===============================================================================
 	ASlashCharacter();
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -36,22 +52,29 @@ public:
 	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
 
 protected:
-	virtual void BeginPlay() override;
+	//===============================================================================
+	// PROPERTIES & VARIABLES
+	//===============================================================================
+	UPROPERTY(EditAnywhere, Category = Input)
+	TObjectPtr<UInputMappingContext> SlashContext;
+	UPROPERTY(EditAnywhere, Category = Input)
+	TObjectPtr<UInputAction> MovementAction;
+	UPROPERTY(EditAnywhere, Category = Input)
+	TObjectPtr<UInputAction> LookAction;
+	UPROPERTY(EditAnywhere, Category = Input)
+	TObjectPtr<UInputAction> JumpAction;
+	UPROPERTY(EditAnywhere, Category = Input)
+	TObjectPtr<UInputAction> EKeyPressedAction;
+	UPROPERTY(EditAnywhere, Category = Input)
+	TObjectPtr<UInputAction> AttackAction;
+	UPROPERTY(EditAnywhere, Category = Input)
+	TObjectPtr<UInputAction> DodgeAction;
 
-	UPROPERTY(EditAnywhere, Category = Input)
-	UInputMappingContext* SlashContext;
-	UPROPERTY(EditAnywhere, Category = Input)
-	UInputAction* MovementAction;
-	UPROPERTY(EditAnywhere, Category = Input)
-	UInputAction* LookAction;
-	UPROPERTY(EditAnywhere, Category = Input)
-	UInputAction* JumpAction;
-	UPROPERTY(EditAnywhere, Category = Input)
-	UInputAction* EKeyPressedAction;
-	UPROPERTY(EditAnywhere, Category = Input)
-	UInputAction* AttackAction;
-	UPROPERTY(EditAnywhere, Category = Input)
-	UInputAction* DodgeAction;
+
+	//===============================================================================
+	// FUNCTIONS
+	//===============================================================================
+	virtual void BeginPlay() override;
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
@@ -60,18 +83,51 @@ protected:
 	void Attack();
 	void Dodge();
 
+	void PlayAttackMontage();
+	void OnAttackEnded(UAnimMontage* Montage, bool bInterrupted);
+	bool CanAttack() const;
+	void PlayEquipMontage(FName SectionName);
+	bool CanDisarm() const;
+	bool CanArm() const;
+
+	void Arm() const;
+	void Disarm() const;
+
+	void FinishEquipping();
 private:
+	//===============================================================================
+	// PROPERTIES & VARIABLES
+	//===============================================================================
+	UPROPERTY(VisibleAnywhere)
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
+	UPROPERTY(VisibleAnywhere)
+	EActionState ActionState = EActionState::EAS_Unoccupied;
 
 	UPROPERTY(VisibleAnywhere)
-	USpringArmComponent* SpringArm;
+	TObjectPtr<USpringArmComponent> SpringArm;
 	UPROPERTY(VisibleAnywhere)
-	UCameraComponent* ViewCamera;
+	TObjectPtr<UCameraComponent> ViewCamera;
 	UPROPERTY(VisibleAnywhere, Category = "Hair")
-	UGroomComponent* Hair;
+	TObjectPtr<UGroomComponent> Hair;
 	UPROPERTY(VisibleAnywhere, Category = "Hair")
-	UGroomComponent* Eyebrows;
+	TObjectPtr<UGroomComponent> Eyebrows;
 
 	UPROPERTY(VisibleInstanceOnly, Category="Item")
-	AItem* OverlappingItem;
+	TObjectPtr<AItem> OverlappingItem;
+
+	UPROPERTY(VisibleAnywhere, Category="Weapon")
+	TObjectPtr<AWeapon> EquippedWeapon;
+
+	/**
+	* Animation montages
+	*/
+	UPROPERTY(EditDefaultsOnly, Category="Montages")
+	TObjectPtr<UAnimMontage> AttackMontage;
+	UPROPERTY(EditDefaultsOnly, Category="Montages")
+	TObjectPtr<UAnimMontage> EquipMontage;
+
+	FOnMontageEnded EndMontageDelegate;
+	//===============================================================================
+	// FUNCTIONS
+	//===============================================================================
 };

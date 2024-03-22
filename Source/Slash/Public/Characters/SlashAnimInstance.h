@@ -6,6 +6,8 @@
 #include "Animation/AnimInstance.h"
 #include "SlashAnimInstance.generated.h"
 
+class UCharacterMovementComponent;
+class ASlashCharacter;
 enum class ECharacterState : uint8;
 /**
  * 
@@ -14,22 +16,29 @@ UCLASS()
 class SLASH_API USlashAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
+
 public:
-	virtual void NativeInitializeAnimation() override;
-	virtual void NativeUpdateAnimation(float DeltaTime) override;
-
+	//===============================================================================
+	// PROPERTIES & VARIABLES
+	//===============================================================================
 	UPROPERTY(BlueprintReadOnly)
-		class ASlashCharacter* SlashCharacter;
+	TObjectPtr<ASlashCharacter> SlashCharacter;
 
-	UPROPERTY(BlueprintReadOnly, Category = Movement)
-	class UCharacterMovementComponent* SlashCharacterMovement;
+	UPROPERTY(BlueprintReadOnly, Category = "Movement")
+	TObjectPtr<UCharacterMovementComponent> SlashCharacterMovement;
 
-	UPROPERTY(BlueprintReadOnly, Category = Movement)
+	UPROPERTY(BlueprintReadOnly, Category = "Movement")
 	float GroundSpeed;
 
-	UPROPERTY(BlueprintReadOnly, Category = Movement)
+	UPROPERTY(BlueprintReadOnly, Category = "Movement")
 	bool bIsFalling;
 
-	UPROPERTY(BlueprintReadOnly, Category = State)
+	UPROPERTY(BlueprintReadOnly, Category = "Movement | Character State")
 	ECharacterState CharacterState;
+
+	//===============================================================================
+	// FUNCTIONS
+	//===============================================================================
+	virtual void NativeInitializeAnimation() override;
+	virtual void NativeUpdateAnimation(float DeltaTime) override;
 };

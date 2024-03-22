@@ -5,10 +5,16 @@
 
 #include "Characters/SlashCharacter.h"
 
-void AWeapon::Equip(USceneComponent* InParent, const FName InSocketName) const
+void AWeapon::AttachMeshToSocket(USceneComponent* InParent, const FName InSocketName) const
 {
 	const FAttachmentTransformRules TransformRules(EAttachmentRule::SnapToTarget, true);
 	ItemMesh->AttachToComponent(InParent, TransformRules, InSocketName);
+}
+
+void AWeapon::Equip(USceneComponent* InParent, const FName InSocketName)
+{
+	AttachMeshToSocket(InParent, InSocketName);
+	ItemState = EItemState::EIS_Equipped;
 }
 
 void AWeapon::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

@@ -11,7 +11,7 @@ void USlashAnimInstance::NativeInitializeAnimation()
 	Super::NativeInitializeAnimation();
 
 	SlashCharacter = Cast<ASlashCharacter>(TryGetPawnOwner());
-	if(SlashCharacter)
+	if (SlashCharacter)
 	{
 		SlashCharacterMovement = SlashCharacter->GetCharacterMovement();
 	}
@@ -21,10 +21,11 @@ void USlashAnimInstance::NativeUpdateAnimation(float DeltaTime)
 {
 	Super::NativeUpdateAnimation(DeltaTime);
 
-	if(SlashCharacterMovement)
+	if (SlashCharacterMovement)
 	{
 		GroundSpeed = UKismetMathLibrary::VSizeXY(SlashCharacterMovement->Velocity);
 		bIsFalling = SlashCharacterMovement->IsFalling();
 		CharacterState = SlashCharacter->GetCharacterState();
 	}
+	// USlashAnimInstance::AnimNotify_EndCombo()
 }
