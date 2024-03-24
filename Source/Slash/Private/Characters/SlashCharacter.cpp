@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GroomComponent.h"
+#include "Characters/SlashAnimInstance.h"
 #include "Items/Weapons/Weapon.h"
 
 ASlashCharacter::ASlashCharacter()
@@ -33,8 +34,11 @@ ASlashCharacter::ASlashCharacter()
 	Eyebrows = CreateDefaultSubobject<UGroomComponent>(TEXT("Eyebrows"));
 	Eyebrows->SetupAttachment(GetMesh());
 	Eyebrows->AttachmentName = FString("head");
+}
 
-	EndMontageDelegate.BindUObject(this, &ASlashCharacter::OnAttackEnded);
+void ASlashCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
 }
 
 void ASlashCharacter::BeginPlay()
@@ -48,6 +52,16 @@ void ASlashCharacter::BeginPlay()
 		{
 			Subsystem->AddMappingContext(SlashContext, 0);
 		}
+	}
+	SlashAnimInstance = Cast<USlashAnimInstance>(GetMesh()->GetAnimInstance());
+	if (SlashAnimInstance)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("SlashAnimInstnace Successed"));
+		SlashAnimInstance->OnMontageEnded.AddDynamic(this, &ASlashCharacter::OnAttackEnded);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("SlashAnimInstnace Failed"));
 	}
 }
 
@@ -171,10 +185,9 @@ bool ASlashCharacter::CanAttack() const
 
 void ASlashCharacter::PlayAttackMontage()
 {
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	if (AnimInstance && AttackMontage)
+	if (SlashAnimInstance && AttackMontage)
 	{
-		AnimInstance->Montage_Play(AttackMontage);
+		SlashAnimInstance->Montage_Play(AttackMontage);
 		const int32 Selection = FMath::RandRange(0, 2);
 		FName SectionName = FName{};
 		switch (Selection)
@@ -191,24 +204,24 @@ void ASlashCharacter::PlayAttackMontage()
 		default:
 			break;
 		}
-		AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
-		AnimInstance->Montage_SetEndDelegate(EndMontageDelegate);
+		SlashAnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
 	}
 }
 
 void ASlashCharacter::PlayEquipMontage(FName SectionName)
 {
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	if (AnimInstance && EquipMontage)
+	if (SlashAnimInstance && EquipMontage)
 	{
-		AnimInstance->Montage_Play(EquipMontage);
-		AnimInstance->Montage_JumpToSection(SectionName, EquipMontage);
+		SlashAnimInstance->Montage_Play(EquipMontage);
+		SlashAnimInstance->Montage_JumpToSection(SectionName, EquipMontage);
 	}
 }
 
 
 void ASlashCharacter::OnAttackEnded(UAnimMontage* Montage, bool bInterrupted)
 {
+	if(GEngine)
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, Montage->GetName());
 	ActionState = EActionState::EAS_Unoccupied;
 }
 

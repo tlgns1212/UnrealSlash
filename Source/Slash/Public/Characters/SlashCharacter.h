@@ -7,6 +7,7 @@
 #include "InputActionValue.h"
 #include "SlashCharacter.generated.h"
 
+class USlashAnimInstance;
 class AWeapon;
 class AItem;
 class UInputMappingContext;
@@ -47,7 +48,8 @@ public:
 	ASlashCharacter();
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	virtual void PostInitializeComponents() override;
+	
 	FORCEINLINE void SetOverlappingItem(AItem* ItemIn) { OverlappingItem = ItemIn; }
 	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
 
@@ -70,6 +72,8 @@ protected:
 	UPROPERTY(EditAnywhere, Category = Input)
 	TObjectPtr<UInputAction> DodgeAction;
 
+	UPROPERTY(VisibleAnywhere, Category= "Anim")
+	TObjectPtr<USlashAnimInstance> SlashAnimInstance;
 
 	//===============================================================================
 	// FUNCTIONS
@@ -84,6 +88,7 @@ protected:
 	void Dodge();
 
 	void PlayAttackMontage();
+	UFUNCTION()
 	void OnAttackEnded(UAnimMontage* Montage, bool bInterrupted);
 	bool CanAttack() const;
 	void PlayEquipMontage(FName SectionName);
@@ -94,6 +99,7 @@ protected:
 	void Disarm() const;
 
 	void FinishEquipping();
+
 private:
 	//===============================================================================
 	// PROPERTIES & VARIABLES
