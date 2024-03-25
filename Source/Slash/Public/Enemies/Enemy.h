@@ -28,7 +28,7 @@ public:
 	virtual void GetHit(const FVector& ImpactPoint) override;
 
 	void PlayHitReactMontage(const FName& SectionName);
-	
+
 protected:
 	//===============================================================================
 	// PROPERTIES & VARIABLES
@@ -40,8 +40,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Montages")
 	TObjectPtr<UAnimMontage> HitReactMontage;
 
+	UPROPERTY(EditAnywhere, Category="Sounds")
+	TObjectPtr<USoundBase> HitSound;
+
 	//===============================================================================
 	// FUNCTIONS
 	//===============================================================================
 	virtual void BeginPlay() override;
+
+	void DirectionalHitReact(const FVector& ImpactPoint);
 };
