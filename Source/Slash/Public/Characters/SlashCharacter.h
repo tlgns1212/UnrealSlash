@@ -53,6 +53,15 @@ public:
 	FORCEINLINE void SetOverlappingItem(AItem* ItemIn) { OverlappingItem = ItemIn; }
 	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
 
+	UFUNCTION(BlueprintCallable)
+	void SetWeaponCollision(ECollisionEnabled::Type CollisionEnabled);
+	
+	void Arm() const;
+	void Disarm() const;
+
+	void FinishEquipping();
+	void EndAttack();
+	
 protected:
 	//===============================================================================
 	// PROPERTIES & VARIABLES
@@ -88,17 +97,10 @@ protected:
 	void Dodge();
 
 	void PlayAttackMontage();
-	UFUNCTION()
-	void OnAttackEnded(UAnimMontage* Montage, bool bInterrupted);
 	bool CanAttack() const;
-	void PlayEquipMontage(FName SectionName);
+	void PlayEquipMontage(const FName& SectionName);
 	bool CanDisarm() const;
 	bool CanArm() const;
-
-	void Arm() const;
-	void Disarm() const;
-
-	void FinishEquipping();
 
 private:
 	//===============================================================================
@@ -132,7 +134,6 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category="Montages")
 	TObjectPtr<UAnimMontage> EquipMontage;
 
-	FOnMontageEnded EndMontageDelegate;
 	//===============================================================================
 	// FUNCTIONS
 	//===============================================================================

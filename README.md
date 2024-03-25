@@ -24,7 +24,10 @@ A Unreal Engine 5 MMORPG Game
 - Anim Montage로 공격을 만들기
 - MetaSounds로 다른 오디오 파일 튼 거 같은 효과 내기
 - Niagara Particle Effects 사용하기
-- 
+- Key를 사용해서 Additive Layer Track에서 애니메이션 조금 수정했다가 변경사항 다시 원래 애니메이션에 맞게 돌아가게 해서
+- Notify를 이용해 무기의 Collsion 껐다 켜서 필요할때만 Overlap하도록 하고, Channel를 조절하여 원하는 대상만 공격
+- Interface를 통해 상속한 대상만 공격하도록 하기
+- Blender의 Mixamo converter addon을 이용해서 Root Bone이 없는 Mixamo Character에 Root Bone 추가해줘서 Root animation 적용하기
 #### Items
 
 - ✅ 아이템 만들기

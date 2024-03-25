@@ -7,6 +7,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GroomComponent.h"
 #include "Characters/SlashAnimInstance.h"
+#include "Components/BoxComponent.h"
 #include "Items/Weapons/Weapon.h"
 
 ASlashCharacter::ASlashCharacter()
@@ -54,15 +55,6 @@ void ASlashCharacter::BeginPlay()
 		}
 	}
 	SlashAnimInstance = Cast<USlashAnimInstance>(GetMesh()->GetAnimInstance());
-	if (SlashAnimInstance)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("SlashAnimInstnace Successed"));
-		SlashAnimInstance->OnMontageEnded.AddDynamic(this, &ASlashCharacter::OnAttackEnded);
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("SlashAnimInstnace Failed"));
-	}
 }
 
 void ASlashCharacter::Move(const FInputActionValue& Value)
@@ -155,7 +147,6 @@ bool ASlashCharacter::CanArm() const
 
 void ASlashCharacter::Arm() const
 {
-	// TODO : Notify in C++ To Arm
 	if (EquippedWeapon)
 	{
 		EquippedWeapon->AttachMeshToSocket(GetMesh(), FName{"RightHandSocket"});
@@ -164,7 +155,6 @@ void ASlashCharacter::Arm() const
 
 void ASlashCharacter::Disarm() const
 {
-	// TODO : Notify in C++ To Disarm
 	if (EquippedWeapon)
 	{
 		EquippedWeapon->AttachMeshToSocket(GetMesh(), FName{"SpineSocket"});
@@ -181,7 +171,6 @@ bool ASlashCharacter::CanAttack() const
 	return ActionState == EActionState::EAS_Unoccupied
 		&& CharacterState != ECharacterState::ECS_Unequipped;
 }
-
 
 void ASlashCharacter::PlayAttackMontage()
 {
@@ -208,7 +197,7 @@ void ASlashCharacter::PlayAttackMontage()
 	}
 }
 
-void ASlashCharacter::PlayEquipMontage(FName SectionName)
+void ASlashCharacter::PlayEquipMontage(const FName& SectionName)
 {
 	if (SlashAnimInstance && EquipMontage)
 	{
@@ -218,13 +207,18 @@ void ASlashCharacter::PlayEquipMontage(FName SectionName)
 }
 
 
-void ASlashCharacter::OnAttackEnded(UAnimMontage* Montage, bool bInterrupted)
+void ASlashCharacter::EndAttack()
 {
-	if(GEngine)
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, Montage->GetName());
 	ActionState = EActionState::EAS_Unoccupied;
 }
 
+void ASlashCharacter::SetWeaponCollision(ECollisionEnabled::Type CollisionEnabled)
+{
+	if(EquippedWeapon && EquippedWeapon->GetWeaponBox())
+	{
+		EquippedWeapon->GetWeaponBox()->SetCollisionEnabled(CollisionEnabled);
+	}
+}
 
 void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {

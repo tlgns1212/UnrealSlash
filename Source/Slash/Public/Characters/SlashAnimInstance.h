@@ -41,4 +41,17 @@ public:
 	//===============================================================================
 	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaTime) override;
+
+	UFUNCTION()
+	void AnimNotify_EndAttack() const;
+	UFUNCTION()
+	void AnimNotify_Arm() const;
+	UFUNCTION()
+	void AnimNotify_Disarm() const;
+	UFUNCTION()
+	void AnimNotify_FinishEquip() const;
+	UFUNCTION()
+	void AnimNotify_EnableBoxCollision() const;
+	UFUNCTION()
+	void AnimNotify_DisableBoxCollision() const;
 };

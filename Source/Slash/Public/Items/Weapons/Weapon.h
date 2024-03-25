@@ -6,6 +6,7 @@
 #include "Items/Item.h"
 #include "Weapon.generated.h"
 
+class UBoxComponent;
 /**
  * 
  */
@@ -18,24 +19,41 @@ public:
 	//===============================================================================
 	// PROPERTIES & VARIABLES
 	//===============================================================================
-	
+
 	//===============================================================================
 	// FUNCTIONS
 	//===============================================================================
+	AWeapon();
 	void Equip(USceneComponent* InParent, FName InSocketName);
 	void AttachMeshToSocket(USceneComponent* InParent, FName InSocketName) const;
+
+	FORCEINLINE UBoxComponent* GetWeaponBox() const { return WeaponBox; }
 
 protected:
 	//===============================================================================
 	// PROPERTIES & VARIABLES
 	//===============================================================================
+	UPROPERTY(EditAnywhere, Category="Weapon Properties")
+	TObjectPtr<USoundBase> EquipSound;
+	UPROPERTY(VisibleAnywhere, Category="Weapon Properties")
+	TObjectPtr<UBoxComponent> WeaponBox;
 
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USceneComponent> BoxTraceStart;
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USceneComponent> BoxTraceEnd;
 	//===============================================================================
 	// FUNCTIONS
 	//===============================================================================
-	void OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	                          UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
-	                          const FHitResult& SweepResult) override;
-	void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	                        UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) override;
+	virtual void BeginPlay() override;
+	virtual void OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	                                  UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+	                                  const FHitResult& SweepResult) override;
+	virtual void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	                                UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) override;
+
+	UFUNCTION()
+	void OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	                       UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+	                       const FHitResult& SweepResult);
 };

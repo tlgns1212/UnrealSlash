@@ -30,3 +30,51 @@ void USlashAnimInstance::NativeUpdateAnimation(float DeltaTime)
 	}
 	// USlashAnimInstance::AnimNotify_EndCombo()
 }
+
+void USlashAnimInstance::AnimNotify_EndAttack() const
+{
+	if(SlashCharacter)
+	{
+		SlashCharacter->EndAttack();
+	}
+}
+
+void USlashAnimInstance::AnimNotify_Arm() const
+{
+	if(SlashCharacter)
+	{
+		SlashCharacter->Arm();
+	}
+}
+
+void USlashAnimInstance::AnimNotify_Disarm() const
+{
+	if(SlashCharacter)
+	{
+		SlashCharacter->Disarm();
+	}
+}
+
+void USlashAnimInstance::AnimNotify_FinishEquip() const
+{
+	if(SlashCharacter)
+	{
+		SlashCharacter->FinishEquipping();
+	}
+}
+
+void USlashAnimInstance::AnimNotify_EnableBoxCollision() const
+{
+	if(SlashCharacter)
+	{
+		SlashCharacter->SetWeaponCollision(ECollisionEnabled::QueryOnly);
+	}
+}
+
+void USlashAnimInstance::AnimNotify_DisableBoxCollision() const
+{
+	if(SlashCharacter)
+	{
+		SlashCharacter->SetWeaponCollision(ECollisionEnabled::NoCollision);
+	}
+}
