@@ -44,6 +44,10 @@ void AEnemy::GetHit(const FVector& ImpactPoint)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this,HitSound, ImpactPoint);	
 	}
+	if(HitParticles)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(this,HitParticles,ImpactPoint);
+	}
 }
 
 void AEnemy::PlayHitReactMontage(const FName& SectionName)
@@ -79,33 +83,17 @@ void AEnemy::DirectionalHitReact(const FVector& ImpactPoint)
 	}
 
 	FName Section{"FromBack"};
-	if(GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(2,5.f,FColor::Blue,FString::SanitizeFloat(Theta));
-	}
 	if(Theta >= -45.f && Theta < 45.f)
 	{
 		Section = FName{"FromFront"};
-		if(GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(1,5.f,FColor::Red,Section.ToString());
-		}
 	}
 	else if(Theta >= -135.f && Theta < -45.f)
 	{
 		Section = FName{"FromLeft"};
-		if(GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(1,5.f,FColor::Red,Section.ToString());
-		}
 	}
 	else if(Theta >= 45.f && Theta < 135.f)
 	{
 		Section = FName{"FromRight"};
-		if(GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(1,5.f,FColor::Red,Section.ToString());
-		}
 	}
 	
 	PlayHitReactMontage(Section);

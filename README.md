@@ -30,6 +30,9 @@ A Unreal Engine 5 MMORPG Game
 - Blender의 Mixamo converter addon을 이용해서 Root Bone이 없는 Mixamo Character에 Root Bone 추가해줘서 Root animation 적용하기
 - Dot Product, Cross Product를 이용해서 무기가 적을 어느 각도에서 때리는지 파악
 - Sound Attenuation을 이용해서 거리에 따라 들리는 Sound 다르게 하기
+- Cascade Particle System(Legacy)와 Niagara Particle System을 이용해서 파티클 이펙트 추가하기(피)
+- 무기 Tracing Cascade Particle System을 이용해서 무기 효과 적용
+- 
 #### Items
 
 - ✅ 아이템 만들기
