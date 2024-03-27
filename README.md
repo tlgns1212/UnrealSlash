@@ -32,7 +32,10 @@ A Unreal Engine 5 MMORPG Game
 - Sound Attenuation을 이용해서 거리에 따라 들리는 Sound 다르게 하기
 - Cascade Particle System(Legacy)와 Niagara Particle System을 이용해서 파티클 이펙트 추가하기(피)
 - 무기 Tracing Cascade Particle System을 이용해서 무기 효과 적용
-- 
+- Mesh를 Destructible Mesh로 만들고 Field System을 이용해서 무기로 공격했을 때 잘게잘게 부서지는 효과 적용
+- virtual 함수 Blueprint에서도 override하기 위해 UFUNCTION(BlueprintNativeEvent)를 선언하면 Blueprint에서도 가져올 수 있고, C++에서는 GetHit_Implementation이라고 명명을 바꾸면 됨
+- Destructible Mesh 부서지는 음성 추가(MetaSounds) + Sound Attenuation
+-  
 #### Items
 
 - ✅ 아이템 만들기

@@ -6,6 +6,7 @@
 #include "Characters/SlashCharacter.h"
 #include "Components/BoxComponent.h"
 #include "Components/SphereComponent.h"
+#include "FieldSystems/MyFieldSystemActor.h"
 #include "Interfaces/HitInterface.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -29,6 +30,16 @@ void AWeapon::BeginPlay()
 	Super::BeginPlay();
 
 	WeaponBox->OnComponentBeginOverlap.AddDynamic(this, &AWeapon::OnBoxBeginOverlap);
+
+	if(GetWorld())
+	{
+		MyFieldSystemActor = GetWorld()->SpawnActor<AMyFieldSystemActor>(AMyFieldSystemActor::StaticClass());
+		if(MyFieldSystemActor)
+		{
+			MyFieldSystemActor->AttachToActor(this,FAttachmentTransformRules::SnapToTargetIncludingScale);
+			MyFieldSystemActor->SetOwner(this);
+		}
+	}
 }
 
 void AWeapon::AttachMeshToSocket(USceneComponent* InParent, const FName InSocketName) const
@@ -96,7 +107,12 @@ void AWeapon::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 		IHitInterface* HitInterface = Cast<IHitInterface>(BoxHit.GetActor());
 		if(HitInterface)
 		{
-			HitInterface->GetHit(BoxHit.ImpactPoint);
+			IHitInterface::Execute_GetHit(BoxHit.GetActor(), BoxHit.ImpactPoint);
+			// HitInterface->Execute_GetHit(BoxHit.GetActor(), BoxHit.ImpactPoint);
+			if(MyFieldSystemActor)
+			{
+				MyFieldSystemActor->CreateFieldForce(BoxHit.ImpactPoint);
+			}
 		}
 		IgnoreActors.AddUnique(BoxHit.GetActor());
 	}

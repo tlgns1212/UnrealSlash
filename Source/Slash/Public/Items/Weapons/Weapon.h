@@ -6,6 +6,7 @@
 #include "Items/Item.h"
 #include "Weapon.generated.h"
 
+class AMyFieldSystemActor;
 class UBoxComponent;
 /**
  * 
@@ -45,6 +46,8 @@ protected:
 	TObjectPtr<USceneComponent> BoxTraceEnd;
 
 	TArray<TObjectPtr<AActor>> IgnoreActors;
+	UPROPERTY(VisibleAnywhere, Category="FieldSystem")
+	TObjectPtr<AMyFieldSystemActor> MyFieldSystemActor;
 	//===============================================================================
 	// FUNCTIONS
 	//===============================================================================
