@@ -19,9 +19,9 @@ AMyFieldSystemActor::AMyFieldSystemActor()
 	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
 	Sphere->SetupAttachment(GetRootComponent());
 
-	RadialFalloffMagnitude = 500000.f;
-	RadialVectorMagnitude = 25000000.f;
-	Radius = 200.f;
+	RadialFalloffMagnitude = 5000.f;
+	RadialVectorMagnitude = 10000.f;
+	Radius = 100.f;
 }
 
 void AMyFieldSystemActor::CreateFieldForce(const FVector& ImpactPoint) const
