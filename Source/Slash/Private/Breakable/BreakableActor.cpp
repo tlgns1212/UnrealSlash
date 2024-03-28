@@ -29,10 +29,8 @@ ABreakableActor::ABreakableActor()
 void ABreakableActor::BeginPlay()
 {
 	Super::BeginPlay();
-
 	GeometryCollection->OnChaosBreakEvent.AddDynamic(this, &ABreakableActor::OnChaosBreakEvent);
 }
-
 
 void ABreakableActor::Tick(float DeltaTime)
 {
@@ -41,21 +39,24 @@ void ABreakableActor::Tick(float DeltaTime)
 
 void ABreakableActor::GetHit_Implementation(const FVector& ImpactPoint)
 {
+	if (bBroken) return;
+	bBroken = true;
 	UWorld* World = GetWorld();
-	if(World && TreasureClass)
+	if (World && TreasureClasses.Num() > 0)
 	{
-		FVector Location = GetActorLocation();
-		Location.Z += 75.f;
-		World->SpawnActor<ATreasure>(TreasureClass, Location, GetActorRotation());
+		const int32 Selection = FMath::RandRange(0, TreasureClasses.Num() - 1);
+		World->SpawnActor<ATreasure>(TreasureClasses[Selection], GetActorLocation(), GetActorRotation());
 	}
 	if (PotBreakSound)
 	{
-		UGameplayStatics::PlaySoundAtLocation(this, PotBreakSound, ImpactPoint);
+		UGameplayStatics::PlaySoundAtLocation(this, PotBreakSound, GetActorLocation());
 	}
 }
 
 void ABreakableActor::OnChaosBreakEvent(const FChaosBreakEvent& BreakEvent)
 {
-	Capsule->SetCollisionResponseToChannel(ECC_Pawn,ECR_Ignore);
+	if (bChaosBroke)return;
+	bChaosBroke = true;
+	Capsule->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
 	SetLifeSpan(3.f);
 }

@@ -3,6 +3,7 @@
 
 #include "Items/Weapons/Weapon.h"
 
+#include "NiagaraComponent.h"
 #include "Characters/SlashCharacter.h"
 #include "Components/BoxComponent.h"
 #include "Components/SphereComponent.h"
@@ -31,12 +32,12 @@ void AWeapon::BeginPlay()
 
 	WeaponBox->OnComponentBeginOverlap.AddDynamic(this, &AWeapon::OnBoxBeginOverlap);
 
-	if(GetWorld())
+	if (GetWorld())
 	{
 		MyFieldSystemActor = GetWorld()->SpawnActor<AMyFieldSystemActor>(AMyFieldSystemActor::StaticClass());
-		if(MyFieldSystemActor)
+		if (MyFieldSystemActor)
 		{
-			MyFieldSystemActor->AttachToActor(this,FAttachmentTransformRules::SnapToTargetIncludingScale);
+			MyFieldSystemActor->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
 			MyFieldSystemActor->SetOwner(this);
 		}
 	}
@@ -48,8 +49,10 @@ void AWeapon::AttachMeshToSocket(USceneComponent* InParent, const FName InSocket
 	ItemMesh->AttachToComponent(InParent, TransformRules, InSocketName);
 }
 
-void AWeapon::Equip(USceneComponent* InParent, const FName InSocketName)
+void AWeapon::Equip(USceneComponent* InParent, const FName InSocketName, AActor* NewOwner, APawn* NewInstigator)
 {
+	SetOwner(NewOwner);
+	SetInstigator(NewInstigator);
 	AttachMeshToSocket(InParent, InSocketName);
 	ItemState = EItemState::EIS_Equipped;
 	if (EquipSound)
@@ -59,6 +62,10 @@ void AWeapon::Equip(USceneComponent* InParent, const FName InSocketName)
 	if (Sphere)
 	{
 		Sphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+	if (EmbersEffect)
+	{
+		EmbersEffect->Deactivate();
 	}
 }
 
@@ -84,11 +91,11 @@ void AWeapon::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 
 	TArray<AActor*> ActorsToIgnore;
 	ActorsToIgnore.Add(this);
-	for(AActor* Actor : IgnoreActors)
+	for (AActor* Actor : IgnoreActors)
 	{
 		ActorsToIgnore.AddUnique(Actor);
 	}
-	
+
 	FHitResult BoxHit;
 	UKismetSystemLibrary::BoxTraceSingle(this,
 	                                     Start,
@@ -98,22 +105,25 @@ void AWeapon::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 	                                     ETraceTypeQuery::TraceTypeQuery1,
 	                                     false,
 	                                     ActorsToIgnore,
-	                                     EDrawDebugTrace::None,
+	                                     EDrawDebugTrace::ForDuration,
 	                                     BoxHit,
 	                                     true
 	);
-	if(BoxHit.GetActor())
+	if (BoxHit.GetActor())
 	{
 		IHitInterface* HitInterface = Cast<IHitInterface>(BoxHit.GetActor());
-		if(HitInterface)
+		if (HitInterface)
 		{
 			IHitInterface::Execute_GetHit(BoxHit.GetActor(), BoxHit.ImpactPoint);
 			// HitInterface->Execute_GetHit(BoxHit.GetActor(), BoxHit.ImpactPoint);
-			if(MyFieldSystemActor)
-			{
-				MyFieldSystemActor->CreateFieldForce(BoxHit.ImpactPoint);
-			}
 		}
 		IgnoreActors.AddUnique(BoxHit.GetActor());
+		if (MyFieldSystemActor)
+		{
+			MyFieldSystemActor->CreateFieldForce(BoxHit.ImpactPoint);
+		}
+
+		UGameplayStatics::ApplyDamage(BoxHit.GetActor(), Damage, GetInstigator()->GetController(), this,
+		                              UDamageType::StaticClass());
 	}
 }

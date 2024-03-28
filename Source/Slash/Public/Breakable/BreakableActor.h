@@ -40,8 +40,11 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UCapsuleComponent> Capsule;
 
-	UPROPERTY(EditAnywhere, Category="Drop")
-	TSubclassOf<ATreasure> TreasureClass;
+	UPROPERTY(EditAnywhere, Category="Properties")
+	TArray<TSubclassOf<ATreasure>> TreasureClasses;
+
+	bool bBroken = false;
+	bool bChaosBroke = false;
 	
 	//===============================================================================
 	// FUNCTIONS

@@ -21,13 +21,14 @@ AMyFieldSystemActor::AMyFieldSystemActor()
 
 	RadialFalloffMagnitude = 500000.f;
 	RadialVectorMagnitude = 25000000.f;
+	Radius = 200.f;
 }
 
 void AMyFieldSystemActor::CreateFieldForce(const FVector& ImpactPoint) const
 {
 	if (RadialFalloff)
 	{
-		RadialFalloff->SetRadialFalloff(RadialFalloffMagnitude, 0.08f, 1.f, 0, 200, ImpactPoint, EFieldFalloffType::Field_FallOff_None);
+		RadialFalloff->SetRadialFalloff(RadialFalloffMagnitude, 0.08f, 1.f, 0, Radius, ImpactPoint, EFieldFalloffType::Field_FallOff_None);
 	}
 	if (RadialVector)
 	{

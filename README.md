@@ -35,7 +35,8 @@ A Unreal Engine 5 MMORPG Game
 - Mesh를 Destructible Mesh로 만들고 Field System을 이용해서 무기로 공격했을 때 잘게잘게 부서지는 효과 적용
 - virtual 함수 Blueprint에서도 override하기 위해 UFUNCTION(BlueprintNativeEvent)를 선언하면 Blueprint에서도 가져올 수 있고, C++에서는 GetHit_Implementation이라고 명명을 바꾸면 됨
 - Destructible Mesh 부서지는 음성 추가(MetaSounds) + Sound Attenuation
--  
+- Niagara System, Niagara Emitter을 이용해서 아이템 주울 수 있는 상태인 걸 알리는 Particle를 만들고 Niagra를 C++,에서 이용함
+- HealthBarComponent라는 ActorComponent를 하나 만들어서 HP를 보여야 하는 액터에 추가한 후 WBP_HealthBar이 HealthBar(UserWidget)을 상속하게 만들어서 온갖 변수들 변화하게 함으로써 체력표시  
 #### Items
 
 - ✅ 아이템 만들기

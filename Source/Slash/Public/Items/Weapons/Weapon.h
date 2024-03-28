@@ -25,7 +25,7 @@ public:
 	// FUNCTIONS
 	//===============================================================================
 	AWeapon();
-	void Equip(USceneComponent* InParent, FName InSocketName);
+	void Equip(USceneComponent* InParent, FName InSocketName, AActor* NewOwner, APawn* NewInstigator);
 	void AttachMeshToSocket(USceneComponent* InParent, FName InSocketName) const;
 
 	FORCEINLINE UBoxComponent* GetWeaponBox() const { return WeaponBox; }
@@ -37,9 +37,11 @@ protected:
 	//===============================================================================
 	UPROPERTY(EditAnywhere, Category="Weapon Properties")
 	TObjectPtr<USoundBase> EquipSound;
-	UPROPERTY(VisibleAnywhere, Category="Weapon Properties")
+	UPROPERTY(VisibleAnywhere, Category="WeaponProperties")
 	TObjectPtr<UBoxComponent> WeaponBox;
-
+	UPROPERTY(EditAnywhere, Category="WeaponProperties")
+	float Damage = 20.f;
+	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USceneComponent> BoxTraceStart;
 	UPROPERTY(VisibleAnywhere)

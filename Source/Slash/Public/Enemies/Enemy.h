@@ -7,6 +7,9 @@
 #include "Interfaces/HitInterface.h"
 #include "Enemy.generated.h"
 
+class UHealthBarComponent;
+class UAttributeComponent;
+
 UCLASS()
 class SLASH_API AEnemy : public ACharacter, public IHitInterface
 {
@@ -24,7 +27,8 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+	
 	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
 
 	void PlayHitReactMontage(const FName& SectionName);
@@ -46,6 +50,11 @@ protected:
 	UPROPERTY(EditAnywhere, Category="VisualEffects")
 	TObjectPtr<UParticleSystem> HitParticles;
 
+	UPROPERTY(VisibleAnywhere, Category="Attributes")
+	TObjectPtr<UAttributeComponent> Attributes;
+
+	UPROPERTY(VisibleAnywhere, Category="Widgets")
+	TObjectPtr<UHealthBarComponent> HealthBarWidget;
 	//===============================================================================
 	// FUNCTIONS
 	//===============================================================================

@@ -46,7 +46,9 @@ protected:
 	float RadialFalloffMagnitude;
 	UPROPERTY(EditAnywhere, Category="Magnitude")
 	float RadialVectorMagnitude;
-		
+	UPROPERTY(EditAnywhere, Category="Magnitude")
+	float Radius;
+	
 	//===============================================================================
 	// FUNCTIONS
 	//===============================================================================
