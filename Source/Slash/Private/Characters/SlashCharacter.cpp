@@ -55,6 +55,7 @@ void ASlashCharacter::BeginPlay()
 		}
 	}
 	SlashAnimInstance = Cast<USlashAnimInstance>(GetMesh()->GetAnimInstance());
+	Tags.Add(FName{"SlashCharacter"});
 }
 
 void ASlashCharacter::Move(const FInputActionValue& Value)

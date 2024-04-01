@@ -44,6 +44,7 @@ A Unreal Engine 5 MMORPG Game
 - ✅ HealthBarComponent라는 ActorComponent를 하나 ~~~~만들어서 HP를 보여야 하는 액터에 추가한 후 WBP_HealthBar이 HealthBar(UserWidget)을 상속하게 만들어서 온갖 변수들 변화하게 함으로써 체력표시
 - ✅ BlueprintThreadSafeUpdate을 override해서 다양한 애니메이션마다 Tick을 두어서 서로한테 영향을 주거나 느려짐을 방지
 - ✅ ProjectSetting에서 NavigationMesh의 RuntimeGeneration을 Dynamic으로 두어서 Navmesh를 계속 변하게 함
+- ✅ Import한 무기가 Root이 다르면 그걸 blender로 import해서 조정한다음에 export해서 사용, 이렇게 모든 무기 손잡이로 가능
 #### Items
 
 - ✅ 아이템 만들기
