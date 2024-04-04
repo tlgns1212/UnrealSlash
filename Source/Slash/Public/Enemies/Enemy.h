@@ -3,14 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
-#include "Interfaces/HitInterface.h"
+#include "Characters/BaseCharacter.h"
 #include "Enemy.generated.h"
 
 class UPawnSensingComponent;
 class AAIController;
 class UHealthBarComponent;
-class UAttributeComponent;
 
 UENUM(BlueprintType)
 enum class EDeathPose : uint8
@@ -32,7 +30,7 @@ enum class EEnemyState : uint8
 };
 
 UCLASS()
-class SLASH_API AEnemy : public ACharacter, public IHitInterface
+class SLASH_API AEnemy : public ABaseCharacter
 {
 	GENERATED_BODY()
 
@@ -53,37 +51,20 @@ public:
 
 	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
 
-	void PlayHitReactMontage(const FName& SectionName);
-
 protected:
 	//===============================================================================
 	// PROPERTIES & VARIABLES
 	//===============================================================================
-	
-	/**
-		* Animation montages
-	*/
-	UPROPERTY(EditDefaultsOnly, Category="Montages")
-	TObjectPtr<UAnimMontage> HitReactMontage;
-	UPROPERTY(EditDefaultsOnly, Category="Montages")
-	TObjectPtr<UAnimMontage> DeathMontage;
-
-	UPROPERTY(EditAnywhere, Category="Sounds")
-	TObjectPtr<USoundBase> HitSound;
-
-	UPROPERTY(EditAnywhere, Category="VisualEffects")
-	TObjectPtr<UParticleSystem> HitParticles;
 
 	/**
 		 * Components
 	 */
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UAttributeComponent> Attributes;
-	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UHealthBarComponent> HealthBarWidget;
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UPawnSensingComponent> PawnSensing;
 
+	UPROPERTY(VisibleInstanceOnly)
 	EEnemyState EnemyState = EEnemyState::EES_Patrolling;
 	UPROPERTY(BlueprintReadOnly)
 	EDeathPose DeathPose = EDeathPose::EDP_Alive;
@@ -119,9 +100,8 @@ protected:
 	void TickCombatTarget();
 	void TickPatrolTarget();
 	void TickRotateHealthBar();
-
-	void DirectionalHitReact(const FVector& ImpactPoint);
-	void Die();
+	
+	virtual void Die() override;
 	bool InTargetRange(const AActor* Target, double Radius) const;
 	void MoveToTarget(const AActor* Target) const;
 

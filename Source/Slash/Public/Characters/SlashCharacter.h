@@ -3,12 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "BaseCharacter.h"
 #include "InputActionValue.h"
 #include "SlashCharacter.generated.h"
 
 class USlashAnimInstance;
-class AWeapon;
 class AItem;
 class UInputMappingContext;
 class UInputAction;
@@ -33,7 +32,7 @@ enum class EActionState : uint8
 };
 
 UCLASS()
-class SLASH_API ASlashCharacter : public ACharacter
+class SLASH_API ASlashCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
 
@@ -52,15 +51,13 @@ public:
 	
 	FORCEINLINE void SetOverlappingItem(AItem* ItemIn) { OverlappingItem = ItemIn; }
 	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
-
-	UFUNCTION(BlueprintCallable)
-	void SetWeaponCollision(ECollisionEnabled::Type CollisionEnabled);
+	
 	
 	void Arm() const;
 	void Disarm() const;
 
 	void FinishEquipping();
-	void EndAttack();
+	virtual void EndAttack() override;
 	
 protected:
 	//===============================================================================
@@ -93,11 +90,11 @@ protected:
 	void Look(const FInputActionValue& Value);
 	void Jump();
 	void EKeyPressed();
-	void Attack();
+	virtual void Attack() override;
 	void Dodge();
 
-	void PlayAttackMontage();
-	bool CanAttack() const;
+	virtual void PlayAttackMontage() override;
+	virtual bool CanAttack() const override;
 	void PlayEquipMontage(const FName& SectionName);
 	bool CanDisarm() const;
 	bool CanArm() const;
@@ -123,14 +120,10 @@ private:
 	UPROPERTY(VisibleInstanceOnly, Category="Item")
 	TObjectPtr<AItem> OverlappingItem;
 
-	UPROPERTY(VisibleAnywhere, Category="Weapon")
-	TObjectPtr<AWeapon> EquippedWeapon;
-
 	/**
 	* Animation montages
 	*/
-	UPROPERTY(EditDefaultsOnly, Category="Montages")
-	TObjectPtr<UAnimMontage> AttackMontage;
+	
 	UPROPERTY(EditDefaultsOnly, Category="Montages")
 	TObjectPtr<UAnimMontage> EquipMontage;
 
