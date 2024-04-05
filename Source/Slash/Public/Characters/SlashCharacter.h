@@ -93,8 +93,7 @@ protected:
 	virtual void Attack() override;
 	void Dodge();
 
-	virtual void PlayAttackMontage() override;
-	virtual bool CanAttack() const override;
+	virtual bool CanAttack() override;
 	void PlayEquipMontage(const FName& SectionName);
 	bool CanDisarm() const;
 	bool CanArm() const;

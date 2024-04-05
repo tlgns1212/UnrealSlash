@@ -117,6 +117,7 @@ void ASlashCharacter::EKeyPressed()
 void ASlashCharacter::Attack()
 {
 	// TODO : Attack Animation in Combos and Only on C++
+	Super::Attack();
 	if (CanAttack())
 	{
 		PlayAttackMontage();
@@ -166,35 +167,10 @@ void ASlashCharacter::FinishEquipping()
 	ActionState = EActionState::EAS_Unoccupied;
 }
 
-bool ASlashCharacter::CanAttack() const
+bool ASlashCharacter::CanAttack()
 {
 	return ActionState == EActionState::EAS_Unoccupied
 		&& CharacterState != ECharacterState::ECS_Unequipped;
-}
-
-void ASlashCharacter::PlayAttackMontage()
-{
-	if (SlashAnimInstance && AttackMontage)
-	{
-		SlashAnimInstance->Montage_Play(AttackMontage);
-		const int32 Selection = FMath::RandRange(0, 2);
-		FName SectionName = FName{};
-		switch (Selection)
-		{
-		case 0:
-			SectionName = FName{"Attack1"};
-			break;
-		case 1:
-			SectionName = FName{"Attack2"};
-			break;
-		case 2:
-			SectionName = FName{"Attack3"};
-			break;
-		default:
-			break;
-		}
-		SlashAnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
-	}
 }
 
 void ASlashCharacter::PlayEquipMontage(const FName& SectionName)

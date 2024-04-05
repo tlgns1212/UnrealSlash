@@ -35,7 +35,7 @@ A Unreal Engine 5 MMORPG Game
 - ✅ Blender의 Mixamo converter addon을 이용해서 Root Bone이 없는 Mixamo Character에 Root Bone 추가해줘서 Root animation 적용하기
 - ✅ Dot Product, Cross Product를 이용해서 무기가 적을 어느 각도에서 때리는지 파악
 - ✅ Sound Attenuation을 이용해서 거리에 따라 들리는 Sound 다르게 하기
-- ✅ Cascade Particle System(Legacy)와 Niagara Particle System을 이용해서 파티클 이펙트 추가하기(피)
+- ✅ Cascade Particle System(Legacy)와 Niagara Particl~~~~e System을 이용해서 파티클 이펙트 추가하기(피)
 - ✅ 무기 Tracing Cascade Particle System을 이용해서 무기 효과 적용
 - ✅ Mesh를 Destructible Mesh로 만들고 Field System을 이용해서 무기로 공격했을 때 잘게잘게 부서지는 효과 적용
 - ✅ virtual 함수 Blueprint에서도 override하기 위해 UFUNCTION(BlueprintNativeEvent)를 선언하면 Blueprint에서도 가져올 수 있고, C++에서는 GetHit_Implementation이라고 명명을 바꾸면 됨
@@ -45,6 +45,7 @@ A Unreal Engine 5 MMORPG Game
 - ✅ BlueprintThreadSafeUpdate을 override해서 다양한 애니메이션마다 Tick을 두어서 서로한테 영향을 주거나 느려짐을 방지
 - ✅ ProjectSetting에서 NavigationMesh의 RuntimeGeneration을 Dynamic으로 두어서 Navmesh를 계속 변하게 함
 - ✅ Import한 무기가 Root이 다르면 그걸 blender로 import해서 조정한다음에 export해서 사용, 이렇게 모든 무기 손잡이로 가능
+- ✅ 애니메이션 추가할때 이상한 부분 있으면 앞뒤로 Key 설정하고 중간에 바꾼부분을 key로 만들어서 자연스럽게 바꿈
 #### Items
 
 - ✅ 아이템 만들기

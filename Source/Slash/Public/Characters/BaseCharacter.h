@@ -42,6 +42,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Montages")
 	TObjectPtr<UAnimMontage> DeathMontage;
 
+	UPROPERTY(EditAnywhere, Category="Combat")
+	TArray<FName> AttackMontageSections;
+	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAttributeComponent> Attributes;
 	
@@ -57,10 +60,16 @@ protected:
 	virtual void Attack();
 	virtual void Die();
 
-	virtual void PlayAttackMontage();
+	void PlayAttackMontage();
 	void PlayHitReactMontage(const FName& SectionName);
 	void DirectionalHitReact(const FVector& ImpactPoint);
-	virtual bool CanAttack() const;
+	void PlayHitSound(const FVector& ImpactPoint);
+	void SpawnHitParticles(const FVector& ImpactPoint);
+	virtual void HandleDamage(float DamageAmount);
+	void PlayMontageSection(UAnimMontage* Montage, const FName& SectionName);
+	
+	virtual bool CanAttack();
+	bool IsAlive();
 	
 
 private:
