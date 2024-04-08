@@ -224,6 +224,11 @@ void AEnemy::HandleDamage(float DamageAmount)
 	}
 }
 
+int32 AEnemy::PlayDeathMontage()
+{
+	const int32 Selection = Super::PlayDeathMontage();
+}
+
 void AEnemy::Die()
 {
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();

@@ -121,6 +121,7 @@ protected:
 	virtual void Attack() override;
 	virtual bool CanAttack() override;
 	virtual void HandleDamage(float DamageAmount) override;
+	virtual int32 PlayDeathMontage() override;
 	
 	virtual void Die() override;
 	bool InTargetRange(const AActor* Target, double Radius) const;
