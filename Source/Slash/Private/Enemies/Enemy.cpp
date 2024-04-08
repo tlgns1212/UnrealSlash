@@ -227,6 +227,7 @@ void AEnemy::HandleDamage(float DamageAmount)
 int32 AEnemy::PlayDeathMontage()
 {
 	const int32 Selection = Super::PlayDeathMontage();
+	return 1;
 }
 
 void AEnemy::Die()
