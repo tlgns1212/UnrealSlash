@@ -2,6 +2,7 @@
 
 #include "Components/AttributeComponent.h"
 #include "Components/BoxComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Items/Weapons/Weapon.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -10,6 +11,7 @@ ABaseCharacter::ABaseCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	Attributes = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attributes"));
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 }
 
 void ABaseCharacter::BeginPlay()
@@ -34,6 +36,11 @@ int32 ABaseCharacter::PlayAttackMontage()
 int32 ABaseCharacter::PlayDeathMontage()
 {
 	return PlayRandomMontageSection(DeathMontage, DeathMontageSections);
+}
+
+void ABaseCharacter::DisableCapsule()
+{
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void ABaseCharacter::PlayHitReactMontage(const FName& SectionName)
@@ -138,7 +145,7 @@ bool ABaseCharacter::IsAlive()
 	return Attributes && Attributes->IsAlive();
 }
 
-void ABaseCharacter::EndAttack()
+void ABaseCharacter::AttackEnd()
 {
 }
 

@@ -12,7 +12,6 @@ UCLASS()
 class SLASH_API ABaseCharacter : public ACharacter, public IHitInterface
 {
 	GENERATED_BODY()
-
 public:
 	//===============================================================================
 	// PROPERTIES & VARIABLES
@@ -27,7 +26,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetWeaponCollision(ECollisionEnabled::Type CollisionEnabled);
 
-	virtual void EndAttack();
+	
 protected:
 	//===============================================================================
 	// PROPERTIES & VARIABLES
@@ -71,7 +70,10 @@ protected:
 	int32 PlayRandomMontageSection(UAnimMontage* Montage, const TArray<FName>& SectionNames);
 	virtual int32 PlayAttackMontage();
 	virtual int32 PlayDeathMontage();
-	
+	void DisableCapsule();
+
+	UFUNCTION(BlueprintCallable)
+	virtual void AttackEnd();
 	virtual bool CanAttack();
 	bool IsAlive();
 	

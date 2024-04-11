@@ -11,7 +11,7 @@
 
 ASlashCharacter::ASlashCharacter()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -91,24 +91,17 @@ void ASlashCharacter::EKeyPressed()
 	AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlappingItem);
 	if (OverlappingWeapon)
 	{
-		OverlappingWeapon->Equip(GetMesh(), FName{"RightHandSocket"}, this, this);
-		CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
-		OverlappingItem = nullptr;
-		EquippedWeapon = OverlappingWeapon;
+		EquipWeapon(OverlappingWeapon);
 	}
 	else
 	{
 		if (CanDisarm())
 		{
-			PlayEquipMontage(FName{"UnEquip"});
-			CharacterState = ECharacterState::ECS_Unequipped;
-			ActionState = EActionState::EAS_EquippingWeapon;
+			Disarm();
 		}
 		else if (CanArm())
 		{
-			PlayEquipMontage(FName{"Equip"});
-			CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
-			ActionState = EActionState::EAS_EquippingWeapon;
+			Arm();
 		}
 	}
 }
@@ -130,9 +123,12 @@ void ASlashCharacter::Dodge()
 	// 회피
 }
 
-void ASlashCharacter::Tick(float DeltaTime)
+void ASlashCharacter::EquipWeapon(AWeapon* Weapon)
 {
-	Super::Tick(DeltaTime);
+	Weapon->Equip(GetMesh(), FName{"RightHandSocket"}, this, this);
+	CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+	OverlappingItem = nullptr;
+	EquippedWeapon = Weapon;
 }
 
 bool ASlashCharacter::CanDisarm() const
@@ -146,7 +142,21 @@ bool ASlashCharacter::CanArm() const
 		EquippedWeapon;
 }
 
-void ASlashCharacter::Arm() const
+void ASlashCharacter::Disarm()
+{
+	PlayEquipMontage(FName{"UnEquip"});
+	CharacterState = ECharacterState::ECS_Unequipped;
+	ActionState = EActionState::EAS_EquippingWeapon;
+}
+
+void ASlashCharacter::Arm()
+{
+	PlayEquipMontage(FName{"Equip"});
+	CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+	ActionState = EActionState::EAS_EquippingWeapon;
+}
+
+void ASlashCharacter::AttachWeaponToHand() const
 {
 	if (EquippedWeapon)
 	{
@@ -154,7 +164,7 @@ void ASlashCharacter::Arm() const
 	}
 }
 
-void ASlashCharacter::Disarm() const
+void ASlashCharacter::AttachWeaponToBack() const
 {
 	if (EquippedWeapon)
 	{
@@ -183,7 +193,7 @@ void ASlashCharacter::PlayEquipMontage(const FName& SectionName)
 }
 
 
-void ASlashCharacter::EndAttack()
+void ASlashCharacter::AttackEnd()
 {
 	ActionState = EActionState::EAS_Unoccupied;
 }

@@ -43,8 +43,6 @@ public:
 	virtual void NativeUpdateAnimation(float DeltaTime) override;
 
 	UFUNCTION()
-	void AnimNotify_EndAttack() const;
-	UFUNCTION()
 	void AnimNotify_Arm() const;
 	UFUNCTION()
 	void AnimNotify_Disarm() const;

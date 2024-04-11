@@ -45,7 +45,6 @@ public:
 	// FUNCTIONS
 	//===============================================================================
 	ASlashCharacter();
-	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void PostInitializeComponents() override;
 	
@@ -53,11 +52,10 @@ public:
 	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
 	
 	
-	void Arm() const;
-	void Disarm() const;
+	void AttachWeaponToHand() const;
+	void AttachWeaponToBack() const;
 
 	void FinishEquipping();
-	virtual void EndAttack() override;
 	
 protected:
 	//===============================================================================
@@ -93,10 +91,14 @@ protected:
 	virtual void Attack() override;
 	void Dodge();
 
+	void EquipWeapon(AWeapon* Weapon);
+	virtual void AttackEnd() override;
 	virtual bool CanAttack() override;
 	void PlayEquipMontage(const FName& SectionName);
 	bool CanDisarm() const;
 	bool CanArm() const;
+	void Disarm();
+	void Arm();
 
 private:
 	//===============================================================================
