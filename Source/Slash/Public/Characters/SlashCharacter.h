@@ -50,7 +50,10 @@ public:
 	
 	FORCEINLINE void SetOverlappingItem(AItem* ItemIn) { OverlappingItem = ItemIn; }
 	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
-	
+
+	/** <IHitInterface> */
+	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
+	/** </IHitInterface> */
 	
 	void AttachWeaponToHand() const;
 	void AttachWeaponToBack() const;

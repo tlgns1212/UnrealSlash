@@ -20,6 +20,12 @@ ASlashCharacter::ASlashCharacter()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 400.f, 0.f);
 
+	GetMesh()->SetCollisionObjectType(ECC_WorldDynamic);
+	GetMesh()->SetCollisionResponseToAllChannels(ECR_Ignore);
+	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
+	GetMesh()->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
+	GetMesh()->SetGenerateOverlapEvents(true);
+
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetupAttachment(GetRootComponent());
 	SpringArm->TargetArmLength = 300.f;
@@ -54,7 +60,7 @@ void ASlashCharacter::BeginPlay()
 		}
 	}
 	SlashAnimInstance = Cast<USlashAnimInstance>(GetMesh()->GetAnimInstance());
-	Tags.Add(FName{"SlashCharacter"});
+	Tags.Add(FName{"EngageableTarget"});
 }
 
 void ASlashCharacter::Move(const FInputActionValue& Value)
@@ -154,6 +160,12 @@ void ASlashCharacter::Arm()
 	PlayEquipMontage(FName{"Equip"});
 	CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
 	ActionState = EActionState::EAS_EquippingWeapon;
+}
+
+void ASlashCharacter::GetHit_Implementation(const FVector& ImpactPoint)
+{
+	PlayHitSound(ImpactPoint);
+	SpawnHitParticles(ImpactPoint);
 }
 
 void ASlashCharacter::AttachWeaponToHand() const

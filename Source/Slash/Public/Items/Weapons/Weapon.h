@@ -37,10 +37,15 @@ protected:
 	//===============================================================================
 	UPROPERTY(EditAnywhere, Category="Weapon Properties")
 	TObjectPtr<USoundBase> EquipSound;
-	UPROPERTY(VisibleAnywhere, Category="WeaponProperties")
+	UPROPERTY(VisibleAnywhere, Category="Weapon Properties")
 	TObjectPtr<UBoxComponent> WeaponBox;
-	UPROPERTY(EditAnywhere, Category="WeaponProperties")
+	UPROPERTY(EditAnywhere, Category="Weapon Properties")
 	float Damage = 20.f;
+
+	UPROPERTY(EditAnywhere, Category="Weapon Properties")
+	FVector BoxTraceExtent = FVector{5.f};
+	UPROPERTY(EditAnywhere, Category="Weapon Properties")
+	bool bShowBoxDebug = false;
 	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USceneComponent> BoxTraceStart;
@@ -54,11 +59,15 @@ protected:
 	// FUNCTIONS
 	//===============================================================================
 	virtual void BeginPlay() override;
-	virtual void OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	                                  UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
-	                                  const FHitResult& SweepResult) override;
-	virtual void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	                                UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) override;
+
+	void PlayEquipSound();
+	void DisableSphereCollision();
+	void DeactivateEmbers();
+	
+	void BoxTrace(FHitResult& BoxHit);
+	void ExecuteGetHit(FHitResult& BoxHit);
+	void CreateFields(const FVector& FieldLocation);
+	bool ActorIsSameType(AActor* OtherActor);
 
 	UFUNCTION()
 	void OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,

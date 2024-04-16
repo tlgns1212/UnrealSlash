@@ -34,11 +34,11 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category="Weapon")
 	TObjectPtr<AWeapon> EquippedWeapon;
 
-	UPROPERTY(EditDefaultsOnly, Category="Montages")
+	UPROPERTY(EditDefaultsOnly, Category="Combat")
 	TObjectPtr<UAnimMontage> AttackMontage;
-	UPROPERTY(EditDefaultsOnly, Category="Montages")
+	UPROPERTY(EditDefaultsOnly, Category="Combat")
 	TObjectPtr<UAnimMontage> HitReactMontage;
-	UPROPERTY(EditDefaultsOnly, Category="Montages")
+	UPROPERTY(EditDefaultsOnly, Category="Combat")
 	TObjectPtr<UAnimMontage> DeathMontage;
 
 	UPROPERTY(EditAnywhere, Category="Combat")
@@ -49,9 +49,9 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAttributeComponent> Attributes;
 	
-	UPROPERTY(EditAnywhere, Category="Sounds")
+	UPROPERTY(EditAnywhere, Category="Combat")
 	TObjectPtr<USoundBase> HitSound;
-	UPROPERTY(EditAnywhere, Category="VisualEffects")
+	UPROPERTY(EditAnywhere, Category="Combat")
 	TObjectPtr<UParticleSystem> HitParticles;
 	
 	//===============================================================================
