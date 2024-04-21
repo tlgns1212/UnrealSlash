@@ -165,6 +165,8 @@ void ASlashCharacter::Arm()
 void ASlashCharacter::GetHit_Implementation(const FVector& ImpactPoint)
 {
 	Super::GetHit_Implementation(ImpactPoint);
+
+	ActionState = EActionState::EAS_HitReaction;
 }
 
 void ASlashCharacter::AttachWeaponToHand() const
